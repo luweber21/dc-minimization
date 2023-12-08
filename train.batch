@@ -1,0 +1,22 @@
+#!/bin/bash
+
+#SBATCH --job-name=battery    	# create a short name for your job
+#SBATCH --nodes=1               # node count
+#SBATCH --ntasks=1              # total number of tasks across all nodes
+#SBATCH --cpus-per-task=1      # cpu-cores per task (>1 if multi-threaded tasks)
+#SBATCH --partition=mem         # Name of the partition
+#SBATCH --mem=50G               	# Total memory allocated
+#SBATCH --time=20:00:00         # total run time limit (HH:MM:SS)
+#SBATCH --output=%x_%j.out   	# output file name
+#SBATCH --nodelist=node[001-009]
+#SBATCH --exclude=node[001-020]
+
+echo "### Running $SLURM_JOB_NAME ###"
+
+cd /home/luweber/battery
+
+# Set your conda environment
+source /home/luweber/.bashrc
+conda activate battery
+
+python3 ./src/agent/stochastic/run_agent.py precise_agent_v4
